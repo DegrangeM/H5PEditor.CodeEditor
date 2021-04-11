@@ -2,7 +2,7 @@
   "title": "H5PEditor.CodeEditor",
   "majorVersion": 1,
   "minorVersion": 0,
-  "patchVersion": 2,
+  "patchVersion": 0,
   "runnable": 0,
   "machineName": "H5PEditor.CodeEditor",
   "author": "Degrange Mathieu",
@@ -11,12 +11,33 @@
       "path": "h5p-code-editor.js"
     },
     {
-      "path": "lib/codemirror.js"
+      "path": "lib/codemirror/lib/codemirror.js"
+    },
+    {
+      "path": "lib/codemirror/addon/mode/loadmode.js"
+    },
+    {
+      "path": "lib/codemirror/addon/edit/matchbrackets.js"
+    },
+    {
+      "path": "lib/codemirror/addon/fold/foldcode.js"
+    },
+    {
+      "path": "lib/codemirror/addon/fold/foldgutter.js"
+    },
+    {
+      "path": "lib/codemirror/addon/fold/indent-fold.js"
     }
   ],
   "preloadedCss": [
     {
       "path": "h5p-code-editor.css"
+    },
+    {
+      "path": "lib/codemirror/lib/codemirror.css"
+    },
+    {
+      "path": "lib/codemirror/addon/fold/foldgutter.css"
     }
   ]
 }

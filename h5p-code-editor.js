@@ -35,23 +35,29 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     this.$item.addClass('h5p-code-editor');
     this.$inputs = this.$item.find('input');
 
-    const { EditorState,/* EditorView,*/ basicSetup } = CM["@codemirror/basic-setup"];
-    const { EditorView, keymap } = CM["@codemirror/view"];
-    const { python, pythonLanguage } = CM["@codemirror/lang-python"];
-    const { defaultTabBinding } = CM["@codemirror/commands"];
+    let editor = CodeMirror(this.$item.find('.h5p-code-editor-editor')[0], {
+      value: "test=5",
+      mode:  "python",
+      lineNumbers: true,
+      lineWrapping: true,
+      matchBrackets: true,
+      foldGutter: true,
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+    });
 
-    let editor = new EditorView({
-      state: EditorState.create({
-        doc: 'test = 5',
-        extensions: [
-          basicSetup,
-          keymap.of([defaultTabBinding]),
-          python(),
-          EditorView.editable.of(false)
-        ]
-      }),
-      parent: this.$item.find('.h5p-code-editor-editor')[0]
-    })
+    window.toto = editor;
+
+    //H5P.getLibraryPath(this.parent.currentLibrary);
+
+    //H5PEditor.libraryCache[this.parent.currentLibrary].javascript.filter;
+
+   
+    CodeMirror.autoLoadMode(editor, "python", {
+      path: function (mode) {
+        if (!/^[a-z0-9.-]+$/i.test(mode)) mode = 'htmlmixed'; // security
+        return H5P.getLibraryPath('H5PEditor.CodeEditor-1.0') + '/lib/codemirror/mode/' + mode + '/' + mode + '.js';
+      }
+    });
 
     // alert(editor.state.doc.toString())
 

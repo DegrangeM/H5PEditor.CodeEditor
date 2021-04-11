@@ -7,7 +7,7 @@ search/jump-to-line.js
 search/matchesonscrollbar.js    --> annotate scrollbar
 
 
-edit/matchbrackets.js
+OK edit/matchbrackets.js
 
 comment/comment.js ????? pas de shortcut ?
 
