@@ -1,0 +1,41 @@
+dialog/dialog.js
+
+
+search/searchcursor.js         → la recherche de base du navigateur suffit sinon ....
+search/search.js
+search/jump-to-line.js
+search/matchesonscrollbar.js    --> annotate scrollbar
+
+
+edit/matchbrackets.js
+
+comment/comment.js ????? pas de shortcut ?
+
+fold/foldcode.js        +foldparlangage ?
+fold/foldgutter.js
+
+hint ????
+
+linter ?? non ya pas python
+
+selection/active-line.js
+
+mode/loadmode.js ?? charge automatiquement le fichier de langue
+
+display/placeholder.js ???
+
+display/fullscreen.js ??
+
+display/panel.js ???
+
+
+editor.setOption("extraKeys", {
+  Tab: null = tab activé / false = tab désactivé
+});
+
+
+CodeMirror.commands.defaultTab
+
+editor.setOption("extraKeys", {
+  Esc: function(){console.log('a');}
+});
