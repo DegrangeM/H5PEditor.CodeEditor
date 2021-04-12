@@ -14,6 +14,9 @@
       "path": "lib/codemirror/lib/codemirror.js"
     },
     {
+      "path": "lib/codemirror/mode/meta.js"
+    },
+    {
       "path": "lib/codemirror/addon/mode/loadmode.js"
     },
     {

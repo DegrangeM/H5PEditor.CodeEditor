@@ -4,6 +4,13 @@
  * @param {jQuery} $
  */
 
+/*
+
+options.langue : soit ça contient la langue en elle même, soit ça pointe vers un autre champs (détection du caractère ./)
+
+
+*/
+
 H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
 
   /**
@@ -35,9 +42,8 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     this.$item.addClass('h5p-code-editor');
     this.$inputs = this.$item.find('input');
 
-    let editor = CodeMirror(this.$item.find('.h5p-code-editor-editor')[0], {
+    this.editor = CodeMirror(this.$item.find('.h5p-code-editor-editor')[0], {
       value: "test=5",
-      mode: "python",
       lineNumbers: true,
       lineWrapping: true,
       matchBrackets: true,
@@ -68,9 +74,12 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       }
     });
 
-    editor.on('focus', function (cm) { // On focus, make tab add tabb in editor
+
+    this.editor.on('focus', function (cm) { // On focus, make tab add tab in editor
       cm.removeKeyMap('tabAccessibility');
     });
+
+    this.setLanguage('python');
 
     window.toto = editor;
 
@@ -79,12 +88,6 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     //H5PEditor.libraryCache[this.parent.currentLibrary].javascript.filter;
 
 
-    CodeMirror.autoLoadMode(editor, "python", {
-      path: function (mode) {
-        if (!/^[a-z0-9.-]+$/i.test(mode)) mode = 'htmlmixed'; // security
-        return H5P.getLibraryPath('H5PEditor.CodeEditor-1.0') + '/lib/codemirror/mode/' + mode + '/' + mode + '.js';
-      }
-    });
 
     // alert(editor.state.doc.toString())
 
@@ -99,6 +102,20 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     this.$errors = this.$item.children('.h5p-errors');
 
   };
+
+  C.prototype.setLanguage = function (mode) {
+    let modeInfo = CodeMirror.findModeByName(mode);
+    if (modeInfo) {
+      this.editor.setOption('mode', modeInfo.mode);
+      CodeMirror.autoLoadMode(this.editor, modeInfo.mode, {
+        path: function (mode) {
+          return H5P.getLibraryPath('H5PEditor.CodeEditor-1.0') + '/lib/codemirror/mode/' + mode + '/' + mode + '.js';
+        }
+      });
+    } else {
+      this.editor.setOption('mode', null);
+    }
+  }
 
   /**
    * Creates HTML for the widget.
@@ -115,7 +132,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
    * Save changes
    */
   C.saveChange = function (that) {
-    that.params = that.$inputs.eq(0).val();
+    that.params = that.editor.getValue();
     that.setValue(that.field, that.params);
   };
 
@@ -123,12 +140,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
    * Validate the current values.
    */
   C.prototype.validate = function () {
-    // Check if all fields have been filled
-    if (this.params === undefined) {
-      this.$errors.append(H5PEditor.createError(C.t('error:mustBeFilled')));
-    }
-
-    return H5PEditor.checkErrors(this.$errors, this.$inputs, true);
+    return true;
   };
 
   /**
@@ -136,29 +148,6 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
    */
   C.prototype.remove = function () {
     this.$item.remove();
-  };
-
-  /**
-   * Automatically translate some of the key code to a more readable content
-   * For example
-   *   Control key will be shown as Ctrl
-   *   Letter key will be shown as uppercase (i.e. "a" will be shown as "A")
-   */
-  C.getKeyText = function (key) {
-    const keyTranslation = {
-      'Control': C.t('keys:Control')
-    };
-
-    if (keyTranslation.hasOwnProperty(key)) {
-      return keyTranslation[key];
-    }
-
-    if ((/^[a-z]$/).test(key)) {
-      return key.toUpperCase();
-    }
-
-    return key;
-
   };
 
   /**
