@@ -37,12 +37,25 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
 
     let editor = CodeMirror(this.$item.find('.h5p-code-editor-editor')[0], {
       value: "test=5",
-      mode:  "python",
+      mode: "python",
       lineNumbers: true,
       lineWrapping: true,
       matchBrackets: true,
       foldGutter: true,
-      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"]
+      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+      styleActiveLine: {
+        nonEmpty: true
+      },
+      showHint: true,
+      extraKeys: {
+        "F11": function(cm) {
+          cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+        },
+        "Esc": function(cm) {
+          if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+        },
+        "Ctrl-Space": "autocomplete"
+      }
     });
 
     window.toto = editor;
@@ -51,7 +64,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
 
     //H5PEditor.libraryCache[this.parent.currentLibrary].javascript.filter;
 
-   
+
     CodeMirror.autoLoadMode(editor, "python", {
       path: function (mode) {
         if (!/^[a-z0-9.-]+$/i.test(mode)) mode = 'htmlmixed'; // security

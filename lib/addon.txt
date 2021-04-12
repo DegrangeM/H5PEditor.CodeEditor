@@ -11,20 +11,20 @@ OK edit/matchbrackets.js
 
 comment/comment.js ????? pas de shortcut ?
 
-fold/foldcode.js        +foldparlangage ?
-fold/foldgutter.js
+OK fold/foldcode.js        +foldparlangage ?
+OK fold/foldgutter.js
 
-hint ????
+OK hint ????
 
 linter ?? non ya pas python
 
-selection/active-line.js
+OK selection/active-line.js
 
-mode/loadmode.js ?? charge automatiquement le fichier de langue
+OK mode/loadmode.js ?? charge automatiquement le fichier de langue
 
 display/placeholder.js ???
 
-display/fullscreen.js ??
+OK display/fullscreen.js ??
 
 display/panel.js ???
 
