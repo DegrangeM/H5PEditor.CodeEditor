@@ -48,14 +48,28 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       },
       showHint: true,
       extraKeys: {
-        "F11": function(cm) {
+        "F11": function (cm) {
           cm.setOption("fullScreen", !cm.getOption("fullScreen"));
         },
-        "Esc": function(cm) {
-          if (cm.getOption("fullScreen")) cm.setOption("fullScreen", false);
+        "Esc": function (cm) {
+          if (cm.getOption("fullScreen")) {
+            cm.setOption("fullScreen", false);
+          } else { // the user pressed the escape key, now tab will tab to the next element for accessibility
+            if (!cm.state.keyMaps.some(x => x.name == 'tabAccessibility')) {
+              cm.addKeyMap({
+                'name': 'tabAccessibility',
+                'Tab': false,
+                'Shift-Tab': false
+              });
+            }
+          }
         },
         "Ctrl-Space": "autocomplete"
       }
+    });
+
+    editor.on('focus', function (cm) { // On focus, make tab add tabb in editor
+      cm.removeKeyMap('tabAccessibility');
     });
 
     window.toto = editor;
