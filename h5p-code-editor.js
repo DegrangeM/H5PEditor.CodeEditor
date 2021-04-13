@@ -165,8 +165,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
    * Save changes
    */
   C.saveChange = function (that) {
-   // that.params = CodeMirror.H5P.encode(that.editor.getValue());
-    that.params = that.editor.getValue();
+    that.params = CodeMirror.H5P.encode(that.editor.getValue());
     that.setValue(that.field, that.params);
   };
 
