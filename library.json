@@ -17,6 +17,9 @@
       "path": "lib/codemirror/mode/meta.js"
     },
     {
+      "path": "lib/codemirror/keymap/sublime.js"
+    },
+    {
       "path": "lib/codemirror/addon/mode/loadmode.js"
     },
     {

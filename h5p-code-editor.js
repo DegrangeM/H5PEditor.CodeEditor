@@ -43,7 +43,10 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     this.$inputs = this.$item.find('input');
 
     this.editor = CodeMirror(this.$item.find('.h5p-code-editor-editor')[0], {
-      value: "test=5",
+      value: this.params,
+      keyMap: 'sublime',
+      tabSize: 2,
+      indentWithTabs: true,
       lineNumbers: true,
       lineWrapping: true,
       matchBrackets: true,
@@ -74,9 +77,12 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       }
     });
 
-
     this.editor.on('focus', function (cm) { // On focus, make tab add tab in editor
       cm.removeKeyMap('tabAccessibility');
+    });
+    
+    this.editor.on('change', function () {
+      C.saveChange(that);
     });
 
     if (this.field.language && this.field.language[0] === '.') { // Check if language is a path
@@ -106,22 +112,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     this.applyLanguage();
 
     window.toto = this.editor;
-
-    //H5P.getLibraryPath(this.parent.currentLibrary);
-
-    //H5PEditor.libraryCache[this.parent.currentLibrary].javascript.filter;
-
-
-
-    // alert(editor.state.doc.toString())
-
     /* todo : say that echap then tab */
-
-    this.$inputs.eq(0).keydown(function (e) {
-
-      C.saveChange(that);
-
-    });
 
     this.$errors = this.$item.children('.h5p-errors');
 
