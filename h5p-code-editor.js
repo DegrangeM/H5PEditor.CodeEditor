@@ -126,7 +126,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
         this.setLanguage(this.field.language);
       }
     } else {
-      this.setLanguage('htmlmixed');
+      this.setLanguage('HTML');
     }
   }
 
