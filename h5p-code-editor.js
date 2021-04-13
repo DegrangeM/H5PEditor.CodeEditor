@@ -43,7 +43,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     this.$inputs = this.$item.find('input');
 
     this.editor = CodeMirror(this.$item.find('.h5p-code-editor-editor')[0], {
-      value: this.params,
+      value: CodeMirror.H5P.decode(this.params) || '',
       keyMap: 'sublime',
       tabSize: 2,
       indentWithTabs: true,
@@ -76,6 +76,8 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
         "Ctrl-Space": "autocomplete"
       }
     });
+
+    this.editor.refresh(); // required to avoid bug where line number overlap code that might happen in some condition
 
     this.editor.on('focus', function (cm) { // On focus, make tab add tab in editor
       cm.removeKeyMap('tabAccessibility');
@@ -140,7 +142,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       this.editor.setOption('mode', modeInfo.mime); // set the mode by using mime because it allow variation (like typescript which is a variation of javascript)
       CodeMirror.autoLoadMode(this.editor, modeInfo.mode, { // load the language file if required, then refresh the editor
         path: function (mode) { // path is safe because mode is from modeInfo.mime
-          return H5P.getLibraryPath('H5PEditor.CodeEditor-1.0') + '/lib/codemirror/mode/' + mode + '/' + mode + '.js';
+          return H5P.getLibraryPath('CodeMirror-1.0') + '/mode/' + mode + '/' + mode + '.js';
         }
       });
     } else {
@@ -163,6 +165,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
    * Save changes
    */
   C.saveChange = function (that) {
+   // that.params = CodeMirror.H5P.encode(that.editor.getValue());
     that.params = that.editor.getValue();
     that.setValue(that.field, that.params);
   };

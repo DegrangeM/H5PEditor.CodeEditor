@@ -9,68 +9,13 @@
   "preloadedJs": [
     {
       "path": "h5p-code-editor.js"
-    },
-    {
-      "path": "lib/codemirror/lib/codemirror.js"
-    },
-    {
-      "path": "lib/codemirror/mode/meta.js"
-    },
-    {
-      "path": "lib/codemirror/keymap/sublime.js"
-    },
-    {
-      "path": "lib/codemirror/addon/mode/loadmode.js"
-    },
-    {
-      "path": "lib/codemirror/addon/edit/matchbrackets.js"
-    },
-    {
-      "path": "lib/codemirror/addon/fold/foldcode.js"
-    },
-    {
-      "path": "lib/codemirror/addon/fold/foldgutter.js"
-    },
-    {
-      "path": "lib/codemirror/addon/fold/indent-fold.js"
-    },
-    {
-      "path": "lib/codemirror/addon/fold/brace-fold.js"
-    },
-    {
-      "path": "lib/codemirror/addon/fold/comment-fold.js"
-    },
-    {
-      "path": "lib/codemirror/addon/fold/markdown-fold.js"
-    },
-    {
-      "path": "lib/codemirror/addon/fold/xml-fold.js"
-    },
-    {
-      "path": "lib/codemirror/addon/selection/active-line.js"
-    },
-    {
-      "path": "lib/codemirror/addon/display/fullscreen.js"
-    },
-    {
-      "path": "lib/codemirror/addon/hint/show-hint.js"
     }
   ],
-  "preloadedCss": [
+  "preloadedDependencies": [
     {
-      "path": "h5p-code-editor.css"
-    },
-    {
-      "path": "lib/codemirror/lib/codemirror.css"
-    },
-    {
-      "path": "lib/codemirror/addon/fold/foldgutter.css"
-    },
-    {
-      "path": "lib/codemirror/addon/display/fullscreen.css"
-    },
-    {
-      "path": "lib/codemirror/addon/hint/show-hint.css"
+      "machineName": "CodeMirror",
+      "majorVersion": 1,
+      "minorVersion": 0
     }
   ]
 }
