@@ -79,9 +79,29 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       cm.removeKeyMap('tabAccessibility');
     });
 
-    this.setLanguage('python');
+    if (this.field.language && this.field.language[0] === '.') { // Check if language is a path
+      let fieldPath = this.field.language;
+      // language is a path, it should start with ./ or ../
+      // if it start with ./ we remove this part because findField doesn't handle it
+      if (fieldPath[1] === '/') {
+        fieldPath = fieldPath.substring(2); 
+      }
+      this.languageField = H5PEditor.findField(fieldPath, this.parent);
+      if (this.languageField === false) {
+        this.field.language = 'null';
+      } else {
+        this.languageField.changes = [];
+        H5PEditor.followField(this.parent, fieldPath, function () {
+          console.log(this, that);
+          that.applyLanguage();
+        });
+      }
+    }
 
-    window.toto = editor;
+
+    this.applyLanguage();
+
+    window.toto = this.editor;
 
     //H5P.getLibraryPath(this.parent.currentLibrary);
 
@@ -103,7 +123,23 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
 
   };
 
+  C.prototype.applyLanguage = function () {
+    if (this.field.language) {
+      if (this.languageField) {
+        this.setLanguage(this.languageField.value);
+      } else {
+        this.setLanguage(this.field.language);
+      }
+    } else {
+      this.setLanguage('htmlmixed');
+    }
+  }
+
   C.prototype.setLanguage = function (mode) {
+    if (mode === 'null') {
+      this.editor.setOption('mode', null);
+      return;
+    }
     let modeInfo = CodeMirror.findModeByName(mode);
     if (modeInfo) {
       this.editor.setOption('mode', modeInfo.mode);
