@@ -113,9 +113,6 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
 
     this.applyLanguage();
 
-    window.toto = this.editor;
-    /* todo : say that echap then tab */
-
     this.$errors = this.$item.children('.h5p-errors');
 
   };
