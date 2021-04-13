@@ -92,7 +92,6 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       } else {
         this.languageField.changes = [];
         H5PEditor.followField(this.parent, fieldPath, function () {
-          console.log(this, that);
           that.applyLanguage();
         });
       }
@@ -140,9 +139,9 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       this.editor.setOption('mode', null);
       return;
     }
-    let modeInfo = CodeMirror.findModeByName(mode);
+    let modeInfo = CodeMirror.findModeByName(mode) || CodeMirror.findModeByMIME(mode);
     if (modeInfo) {
-      this.editor.setOption('mode', modeInfo.mode);
+      this.editor.setOption('mode', modeInfo.mime);
       CodeMirror.autoLoadMode(this.editor, modeInfo.mode, {
         path: function (mode) {
           return H5P.getLibraryPath('H5PEditor.CodeEditor-1.0') + '/lib/codemirror/mode/' + mode + '/' + mode + '.js';
