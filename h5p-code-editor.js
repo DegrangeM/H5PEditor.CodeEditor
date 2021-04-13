@@ -84,16 +84,21 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       // language is a path, it should start with ./ or ../
       // if it start with ./ we remove this part because findField doesn't handle it
       if (fieldPath[1] === '/') {
-        fieldPath = fieldPath.substring(2); 
+        fieldPath = fieldPath.substring(2);
       }
       this.languageField = H5PEditor.findField(fieldPath, this.parent);
       if (this.languageField === false) {
         this.field.language = 'null';
       } else {
-        this.languageField.changes = [];
-        H5PEditor.followField(this.parent, fieldPath, function () {
-          that.applyLanguage();
-        });
+        if (this.languageField.field.type === 'text' && this.languageField.changeCallbacks) {
+          this.languageField.changeCallbacks.push(function () {
+            that.applyLanguage();
+          });
+        } else {
+          H5PEditor.followField(this.parent, fieldPath, function () {
+            that.applyLanguage();
+          });
+        }
       }
     }
 
@@ -141,9 +146,9 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     }
     let modeInfo = CodeMirror.findModeByName(mode) || CodeMirror.findModeByMIME(mode);
     if (modeInfo) {
-      this.editor.setOption('mode', modeInfo.mime);
-      CodeMirror.autoLoadMode(this.editor, modeInfo.mode, {
-        path: function (mode) {
+      this.editor.setOption('mode', modeInfo.mime); // set the mode by using mime because it allow variation (like typescript which is a variation of javascript)
+      CodeMirror.autoLoadMode(this.editor, modeInfo.mode, { // load the language file if required, then refresh the editor
+        path: function (mode) { // path is safe because mode is from modeInfo.mime
           return H5P.getLibraryPath('H5PEditor.CodeEditor-1.0') + '/lib/codemirror/mode/' + mode + '/' + mode + '.js';
         }
       });
