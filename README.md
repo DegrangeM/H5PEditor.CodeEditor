@@ -51,21 +51,3 @@ Or a path to a field (that need to start with a `.` so use `./` if the path is a
 
 See the source code of [H5P.CodeHighlighter](https://github.com/DegrangeM/H5P.CodeHighlighter) if you want a select with all the supported language.
 The language field can also be a text field.
-```json
-{
-    "name": "language",
-    "type": "text",
-    "label": "Language",
-    "description": "Select the language of your code.",
-    "default": "HTML"
-  },
-  {
-    "name": "code",
-    "type": "text",
-    "language": "./language",
-    "widget": "codeEditor",
-    "label": "Code",
-    "description": "The code to display. You can press Echap then Tab to focus the next field."
-  }
-```
-
