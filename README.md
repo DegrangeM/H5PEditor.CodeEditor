@@ -1,4 +1,4 @@
-# H5PEditor.ShortcutSelector
+# H5PEditor.CodeEditor
 
 H5P Editor widget that allow to select a shortcut for the H5P.Shortcut content type.
 
