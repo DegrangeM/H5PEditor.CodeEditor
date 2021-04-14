@@ -127,7 +127,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
    * You can also set the language attribute to a path to an other field
    * like a text or select field. The language will be set to the value of this field
    * In order to do that, your path need to start with a dot. If you other field
-   * is at the same depth-level, use the ./ notation. For exemple ""./language"
+   * is at the same depth-level, use the ./ notation. For exemple "./language"
    * Be warned that the other field need to be before the code editor field.
    */
   C.prototype.applyLanguage = function () {
