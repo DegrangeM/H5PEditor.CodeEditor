@@ -50,6 +50,9 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       lineNumbers: true,
       lineWrapping: true,
       matchBrackets: true,
+      matchTags: {
+        bothTags: true
+      },
       foldGutter: true,
       gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
       styleActiveLine: {
