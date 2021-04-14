@@ -43,7 +43,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     this.$inputs = this.$item.find('input');
 
     this.editor = CodeMirror(this.$item.find('.h5p-code-editor-editor')[0], {
-      value: CodeMirror.H5P.decode(this.params) || '',
+      value: CodeMirror.H5P.decode(this.params || ''),
       keyMap: 'sublime',
       tabSize: 2,
       indentWithTabs: true,
