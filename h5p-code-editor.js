@@ -117,8 +117,6 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
 
     this.applyLanguage();
 
-    this.$errors = this.$item.children('.h5p-errors');
-
   };
 
   /**
@@ -135,50 +133,18 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
   C.prototype.applyLanguage = function () {
     if (this.field.language) {
       if (this.languageField) {
-        this.setLanguage(this.languageField.value);
+        CodeMirror.H5P.setLanguage(this.editor, this.languageField.value);
       }
       else {
+        CodeMirror.H5P.setLanguage(this.editor, this.field.language);
         this.setLanguage(this.field.language);
       }
     }
     else {
-      this.setLanguage('HTML');
+      CodeMirror.H5P.setLanguage(this.editor, 'HTML');
     }
   };
 
-  /**
-   * Set the editor language to mode.
-   * The mode argument can either be a language name like "Python"
-   * or a mime type like "text/javascript". It will check if the
-   * language is supported by codemirror, and load the required
-   * javascript files if they aren't already loaded.
-   * @param {string} mode 
-   */
-  C.prototype.setLanguage = function (mode) {
-    if (mode === 'null') {
-      this.editor.setOption('mode', null);
-      return;
-    }
-    let modeInfo = CodeMirror.findModeByName(mode) || CodeMirror.findModeByMIME(mode);
-    if (modeInfo) {
-      this.editor.setOption('mode', modeInfo.mime); // set the mode by using mime because it allow variation (like typescript which is a variation of javascript)
-      CodeMirror.autoLoadMode(this.editor, modeInfo.mode, {
-        // The CodeMirror.autoLoad function is a little tricky.
-        // It has to be called after the mode have been set.
-        // It will load the required javascript files if they
-        // aren't already loaded and then will then re-set the mode
-        // to it's current value to trigger a refresh. It does not
-        // set the mode to the value passed in argument, this has
-        // to be done before.
-        path: function (mode) { // path is safe because mode is from modeInfo.mime
-          return H5P.getLibraryPath('CodeMirror-1.0') + '/mode/' + mode + '/' + mode + '.js';
-        }
-      });
-    }
-    else {
-      this.editor.setOption('mode', null); // Set the language to null which will not apply any syntax highlighting.
-    }
-  };
 
   /**
    * Creates HTML for the widget.
