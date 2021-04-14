@@ -4,13 +4,6 @@
  * @param {jQuery} $
  */
 
-/*
-
-options.langue : soit ça contient la langue en elle même, soit ça pointe vers un autre champs (détection du caractère ./)
-
-
-*/
-
 H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
 
   /**
@@ -66,7 +59,10 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
           if (cm.getOption('fullScreen')) {
             cm.setOption('fullScreen', false);
           }
-          else { // the user pressed the escape key, now tab will tab to the next element for accessibility
+          else {
+            // The user pressed the escape key, tab will now tab to the next element
+            // instead of adding a tab in the code. This is important for accessibility
+            // The tab behaviour will revert to default the next time the editor is focused.
             if (!cm.state.keyMaps.some(x => x.name === 'tabAccessibility')) {
               cm.addKeyMap({
                 'name': 'tabAccessibility',
@@ -90,7 +86,11 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       C.saveChange(that);
     });
 
-    if (this.field.language && this.field.language[0] === '.') { // Check if language is a path
+    // Check if the language attribute is set and is a path.
+    // If this is the case, set the field in a variable and
+    // add a watcher to call the applyLanguage function each
+    // time the field value is modified.
+    if (this.field.language && this.field.language[0] === '.') {
       let fieldPath = this.field.language;
       // language is a path, it should start with ./ or ../
       // if it start with ./ we remove this part because findField doesn't handle it
@@ -115,13 +115,23 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       }
     }
 
-
     this.applyLanguage();
 
     this.$errors = this.$item.children('.h5p-errors');
 
   };
 
+  /**
+   * Apply the language to the code editor.
+   * By default, the code editor language will be set to 'HTML'
+   * You can choose to set an other language by setting the language attribute
+   * You can for example set language to "Python".
+   * You can also set the language attribute to a path to an other field
+   * like a text or select field. The language will be set to the value of this field
+   * In order to do that, your path need to start with a dot. If you other field
+   * is at the same depth-level, use the ./ notation. For exemple ""./language"
+   * Be warned that the other field need to be before the code editor field.
+   */
   C.prototype.applyLanguage = function () {
     if (this.field.language) {
       if (this.languageField) {
@@ -136,6 +146,14 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     }
   };
 
+  /**
+   * Set the editor language to mode.
+   * The mode argument can either be a language name like "Python"
+   * or a mime type like "text/javascript". It will check if the
+   * language is supported by codemirror, and load the required
+   * javascript files if they aren't already loaded.
+   * @param {string} mode 
+   */
   C.prototype.setLanguage = function (mode) {
     if (mode === 'null') {
       this.editor.setOption('mode', null);
@@ -144,14 +162,21 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     let modeInfo = CodeMirror.findModeByName(mode) || CodeMirror.findModeByMIME(mode);
     if (modeInfo) {
       this.editor.setOption('mode', modeInfo.mime); // set the mode by using mime because it allow variation (like typescript which is a variation of javascript)
-      CodeMirror.autoLoadMode(this.editor, modeInfo.mode, { // load the language file if required, then refresh the editor
+      CodeMirror.autoLoadMode(this.editor, modeInfo.mode, {
+        // The CodeMirror.autoLoad function is a little tricky.
+        // It has to be called after the mode have been set.
+        // It will load the required javascript files if they
+        // aren't already loaded and then will then re-set the mode
+        // to it's current value to trigger a refresh. It does not
+        // set the mode to the value passed in argument, this has
+        // to be done before.
         path: function (mode) { // path is safe because mode is from modeInfo.mime
           return H5P.getLibraryPath('CodeMirror-1.0') + '/mode/' + mode + '/' + mode + '.js';
         }
       });
     }
     else {
-      this.editor.setOption('mode', null);
+      this.editor.setOption('mode', null); // Set the language to null which will not apply any syntax highlighting.
     }
   };
 
@@ -160,7 +185,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
    */
   C.prototype.createHtml = function () {
     const id = H5PEditor.getNextFieldId(this.field);
-    return H5PEditor.createFieldMarkup(this.field, /* codeInput */'<div class="h5p-code-editor-editor"></div>', id);
+    return H5PEditor.createFieldMarkup(this.field, '<div class="h5p-code-editor-editor"></div>', id);
   };
 
   /**
@@ -195,7 +220,6 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
   C.t = function (key, params) {
     return H5PEditor.t('H5PEditor.CodeEditor', key, params);
   };
-
 
   return C;
 })(H5P.jQuery);
