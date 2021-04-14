@@ -3,6 +3,8 @@
 H5P Editor widget that allow to create a code editor with syntax highlighting and other benefits.
 It is based on the [H5P-CodeMirror](https://github.com/DegrangeM/H5P-CodeMirror) library and used in the [H5P.CodeHighlighter](https://github.com/DegrangeM/H5P.CodeHighlighter) content-type.
 
+![image](https://user-images.githubusercontent.com/53106394/114731194-d2ccbc00-9d41-11eb-9889-ad5c989c9ab7.png)
+
 You can use the `language` attribute to choose the language.
 
 It can either be the language name :
@@ -67,4 +69,3 @@ The language field can also be a text field.
   }
 ```
 
-![image](https://user-images.githubusercontent.com/53106394/114731194-d2ccbc00-9d41-11eb-9889-ad5c989c9ab7.png)
