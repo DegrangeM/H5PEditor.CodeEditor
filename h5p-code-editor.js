@@ -41,7 +41,6 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     this.$item = $(this.createHtml()).appendTo($wrapper);
     this.$item.addClass('h5p-code-editor');
     this.$inputs = this.$item.find('input');
-
     this.editor = CodeMirror(this.$item.find('.h5p-code-editor-editor')[0], {
       value: CodeMirror.H5P.decode(this.params || ''),
       keyMap: 'sublime',
@@ -54,20 +53,21 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
         bothTags: true
       },
       foldGutter: true,
-      gutters: ["CodeMirror-linenumbers", "CodeMirror-foldgutter"],
+      gutters: ['CodeMirror-linenumbers', 'CodeMirror-foldgutter'],
       styleActiveLine: {
         nonEmpty: true
       },
       showHint: true,
       extraKeys: {
-        "F11": function (cm) {
-          cm.setOption("fullScreen", !cm.getOption("fullScreen"));
+        'F11': function (cm) {
+          cm.setOption('fullScreen', !cm.getOption('fullScreen'));
         },
-        "Esc": function (cm) {
-          if (cm.getOption("fullScreen")) {
-            cm.setOption("fullScreen", false);
-          } else { // the user pressed the escape key, now tab will tab to the next element for accessibility
-            if (!cm.state.keyMaps.some(x => x.name == 'tabAccessibility')) {
+        'Esc': function (cm) {
+          if (cm.getOption('fullScreen')) {
+            cm.setOption('fullScreen', false);
+          }
+          else { // the user pressed the escape key, now tab will tab to the next element for accessibility
+            if (!cm.state.keyMaps.some(x => x.name === 'tabAccessibility')) {
               cm.addKeyMap({
                 'name': 'tabAccessibility',
                 'Tab': false,
@@ -76,7 +76,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
             }
           }
         },
-        "Ctrl-Space": "autocomplete"
+        'Ctrl-Space': 'autocomplete'
       }
     });
 
@@ -85,7 +85,7 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     this.editor.on('focus', function (cm) { // On focus, make tab add tab in editor
       cm.removeKeyMap('tabAccessibility');
     });
-    
+
     this.editor.on('change', function () {
       C.saveChange(that);
     });
@@ -100,12 +100,14 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       this.languageField = H5PEditor.findField(fieldPath, this.parent);
       if (this.languageField === false) {
         this.field.language = 'null';
-      } else {
+      }
+      else {
         if (this.languageField.field.type === 'text' && this.languageField.changeCallbacks) {
           this.languageField.changeCallbacks.push(function () {
             that.applyLanguage();
           });
-        } else {
+        }
+        else {
           H5PEditor.followField(this.parent, fieldPath, function () {
             that.applyLanguage();
           });
@@ -124,13 +126,15 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
     if (this.field.language) {
       if (this.languageField) {
         this.setLanguage(this.languageField.value);
-      } else {
+      }
+      else {
         this.setLanguage(this.field.language);
       }
-    } else {
+    }
+    else {
       this.setLanguage('HTML');
     }
-  }
+  };
 
   C.prototype.setLanguage = function (mode) {
     if (mode === 'null') {
@@ -145,20 +149,18 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
           return H5P.getLibraryPath('CodeMirror-1.0') + '/mode/' + mode + '/' + mode + '.js';
         }
       });
-    } else {
+    }
+    else {
       this.editor.setOption('mode', null);
     }
-  }
+  };
 
   /**
    * Creates HTML for the widget.
    */
   C.prototype.createHtml = function () {
     const id = H5PEditor.getNextFieldId(this.field);
-    const descriptionId = (this.field.description !== undefined ? H5PEditor.getDescriptionId(id) : undefined);
-    const codeInput = H5PEditor.createText(this.params !== undefined ? this.params.keys : undefined, undefined, C.t('shortcut'), id, descriptionId);
     return H5PEditor.createFieldMarkup(this.field, /* codeInput */'<div class="h5p-code-editor-editor"></div>', id);
-
   };
 
   /**
