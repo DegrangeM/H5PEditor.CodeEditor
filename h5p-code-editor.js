@@ -137,7 +137,6 @@ H5PEditor.widgets.codeEditor = H5PEditor.codeEditor = (function ($) {
       }
       else {
         CodeMirror.H5P.setLanguage(this.editor, this.field.language);
-        this.setLanguage(this.field.language);
       }
     }
     else {
